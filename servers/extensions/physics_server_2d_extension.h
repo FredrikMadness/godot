@@ -302,6 +302,9 @@ public:
 	EXBIND3(body_set_shape_disabled, RID, int, bool)
 	EXBIND4(body_set_shape_as_one_way_collision, RID, int, bool, real_t)
 
+	EXBIND3(body_set_shape_layer, RID, int, uint32_t)
+	EXBIND3(body_set_shape_mask, RID, int, uint32_t)
+
 	EXBIND2(body_remove_shape, RID, int)
 	EXBIND1(body_clear_shapes, RID)
 

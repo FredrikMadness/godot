@@ -698,6 +698,9 @@ void PhysicsServer2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("body_set_shape_disabled", "body", "shape_idx", "disabled"), &PhysicsServer2D::body_set_shape_disabled);
 	ClassDB::bind_method(D_METHOD("body_set_shape_as_one_way_collision", "body", "shape_idx", "enable", "margin"), &PhysicsServer2D::body_set_shape_as_one_way_collision);
 
+	ClassDB::bind_method(D_METHOD("body_set_shape_layer", "body", "shape_idx", "layer"), &PhysicsServer2D::body_set_shape_layer);
+	ClassDB::bind_method(D_METHOD("body_set_shape_mask", "body", "shape_idx", "mask"), &PhysicsServer2D::body_set_shape_mask);
+
 	ClassDB::bind_method(D_METHOD("body_attach_object_instance_id", "body", "id"), &PhysicsServer2D::body_attach_object_instance_id);
 	ClassDB::bind_method(D_METHOD("body_get_object_instance_id", "body"), &PhysicsServer2D::body_get_object_instance_id);
 

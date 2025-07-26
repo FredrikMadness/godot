@@ -47,6 +47,8 @@ void CollisionShape2D::_update_in_shape_owner(bool p_xform_only) {
 	collision_object->shape_owner_set_disabled(owner_id, disabled);
 	collision_object->shape_owner_set_one_way_collision(owner_id, one_way_collision);
 	collision_object->shape_owner_set_one_way_collision_margin(owner_id, one_way_collision_margin);
+	collision_object->shape_owner_set_layer(owner_id, collision_layer);
+	collision_object->shape_owner_set_mask(owner_id, collision_mask);
 }
 
 void CollisionShape2D::_notification(int p_what) {
@@ -227,6 +229,58 @@ real_t CollisionShape2D::get_one_way_collision_margin() const {
 	return one_way_collision_margin;
 }
 
+void CollisionShape2D::set_collision_layer(uint32_t p_layer) {
+	collision_layer = p_layer;
+}
+
+uint32_t CollisionShape2D::get_collision_layer() const {
+	return collision_layer;
+}
+
+void CollisionShape2D::set_collision_mask(uint32_t p_mask) {
+	collision_mask = p_mask;
+}
+
+uint32_t CollisionShape2D::get_collision_mask() const {
+	return collision_mask;
+}
+
+void CollisionShape2D::set_collision_layer_value(int p_layer_number, bool p_value) {
+	ERR_FAIL_COND_MSG(p_layer_number < 1, "Collision layer number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_MSG(p_layer_number > 32, "Collision layer number must be between 1 and 32 inclusive.");
+	uint32_t collision_layer_new = get_collision_layer();
+	if (p_value) {
+		collision_layer_new |= 1 << (p_layer_number - 1);
+	} else {
+		collision_layer_new &= ~(1 << (p_layer_number - 1));
+	}
+	set_collision_layer(collision_layer_new);
+}
+
+bool CollisionShape2D::get_collision_layer_value(int p_layer_number) const {
+	ERR_FAIL_COND_V_MSG(p_layer_number < 1, false, "Collision layer number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_V_MSG(p_layer_number > 32, false, "Collision layer number must be between 1 and 32 inclusive.");
+	return get_collision_layer() & (1 << (p_layer_number - 1));
+}
+
+void CollisionShape2D::set_collision_mask_value(int p_layer_number, bool p_value) {
+	ERR_FAIL_COND_MSG(p_layer_number < 1, "Collision layer number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_MSG(p_layer_number > 32, "Collision layer number must be between 1 and 32 inclusive.");
+	uint32_t mask = get_collision_mask();
+	if (p_value) {
+		mask |= 1 << (p_layer_number - 1);
+	} else {
+		mask &= ~(1 << (p_layer_number - 1));
+	}
+	set_collision_mask(mask);
+}
+
+bool CollisionShape2D::get_collision_mask_value(int p_layer_number) const {
+	ERR_FAIL_COND_V_MSG(p_layer_number < 1, false, "Collision layer number must be between 1 and 32 inclusive.");
+	ERR_FAIL_COND_V_MSG(p_layer_number > 32, false, "Collision layer number must be between 1 and 32 inclusive.");
+	return get_collision_mask() & (1 << (p_layer_number - 1));
+}
+
 Color CollisionShape2D::_get_default_debug_color() const {
 	const SceneTree *st = SceneTree::get_singleton();
 	return st ? st->get_debug_collisions_color() : Color(0.0, 0.0, 0.0, 0.0);
@@ -284,6 +338,15 @@ void CollisionShape2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_one_way_collision_margin", "margin"), &CollisionShape2D::set_one_way_collision_margin);
 	ClassDB::bind_method(D_METHOD("get_one_way_collision_margin"), &CollisionShape2D::get_one_way_collision_margin);
 
+	ClassDB::bind_method(D_METHOD("set_collision_layer", "layer"), &CollisionShape2D::set_collision_layer);
+	ClassDB::bind_method(D_METHOD("get_collision_layer"), &CollisionShape2D::get_collision_layer);
+	ClassDB::bind_method(D_METHOD("set_collision_mask", "mask"), &CollisionShape2D::set_collision_mask);
+	ClassDB::bind_method(D_METHOD("get_collision_mask"), &CollisionShape2D::get_collision_mask);
+	ClassDB::bind_method(D_METHOD("set_collision_layer_value", "layer_number", "value"), &CollisionShape2D::set_collision_layer_value);
+	ClassDB::bind_method(D_METHOD("get_collision_layer_value", "layer_number"), &CollisionShape2D::get_collision_layer_value);
+	ClassDB::bind_method(D_METHOD("set_collision_mask_value", "layer_number", "value"), &CollisionShape2D::set_collision_mask_value);
+	ClassDB::bind_method(D_METHOD("get_collision_mask_value", "layer_number"), &CollisionShape2D::get_collision_mask_value);
+
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "shape", PROPERTY_HINT_RESOURCE_TYPE, "Shape2D"), "set_shape", "get_shape");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "disabled"), "set_disabled", "is_disabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "one_way_collision"), "set_one_way_collision", "is_one_way_collision_enabled");
@@ -295,6 +358,11 @@ void CollisionShape2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "debug_color"), "set_debug_color", "get_debug_color");
 	// Default value depends on a project setting, override for doc generation purposes.
 	ADD_PROPERTY_DEFAULT("debug_color", Color(0.0, 0.0, 0.0, 0.0));
+
+	ADD_GROUP("Collision", "collision_");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_layer", PROPERTY_HINT_LAYERS_2D_PHYSICS), "set_collision_layer", "get_collision_layer");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_mask", PROPERTY_HINT_LAYERS_2D_PHYSICS), "set_collision_mask", "get_collision_mask");
+
 }
 
 CollisionShape2D::CollisionShape2D() {

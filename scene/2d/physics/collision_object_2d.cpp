@@ -376,6 +376,44 @@ real_t CollisionObject2D::get_shape_owner_one_way_collision_margin(uint32_t p_ow
 	return shapes[p_owner].one_way_collision_margin;
 }
 
+void CollisionObject2D::shape_owner_set_layer(uint32_t p_owner, uint32_t p_layer) {
+	if (area) {
+		return; //not yet implemented for areas
+	}
+	ERR_FAIL_COND(!shapes.has(p_owner));
+
+	ShapeData &sd = shapes[p_owner];
+	sd.layer = p_layer;
+	for (int i = 0; i < sd.shapes.size(); i++) {
+		PhysicsServer2D::get_singleton()->body_set_shape_layer(rid, sd.shapes[i].index, p_layer);
+	}
+}
+
+uint32_t CollisionObject2D::shape_owner_get_layer(uint32_t p_owner) const {
+	ERR_FAIL_COND_V(!shapes.has(p_owner), 0);
+
+	return shapes[p_owner].layer;
+}
+
+void CollisionObject2D::shape_owner_set_mask(uint32_t p_owner, uint32_t p_mask) {
+	if (area) {
+		return; // not yet implemented for areas
+	}
+	ERR_FAIL_COND(!shapes.has(p_owner));
+
+	ShapeData &sd = shapes[p_owner];
+	sd.mask = p_mask;
+	for (int i = 0; i < sd.shapes.size(); i++) {
+		PhysicsServer2D::get_singleton()->body_set_shape_layer(rid, sd.shapes[i].index, p_mask);
+	}
+}
+
+uint32_t CollisionObject2D::shape_owner_get_mask(uint32_t p_owner) const {
+	ERR_FAIL_COND_V(!shapes.has(p_owner), 0);
+
+	return shapes[p_owner].mask;
+}
+
 void CollisionObject2D::get_shape_owners(List<uint32_t> *r_owners) {
 	for (const KeyValue<uint32_t, ShapeData> &E : shapes) {
 		r_owners->push_back(E.key);

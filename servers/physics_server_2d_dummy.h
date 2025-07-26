@@ -224,6 +224,9 @@ public:
 	virtual void body_set_shape_disabled(RID p_body, int p_shape, bool p_disabled) override {}
 	virtual void body_set_shape_as_one_way_collision(RID p_body, int p_shape, bool p_enabled, real_t p_margin = 0) override {}
 
+	virtual void body_set_shape_layer(RID p_body, int p_shape, uint32_t p_layer) override {}
+	virtual void body_set_shape_mask(RID p_body, int p_shape, uint32_t p_mask) override {}
+
 	virtual void body_remove_shape(RID p_body, int p_shape_idx) override {}
 	virtual void body_clear_shapes(RID p_body) override {}
 

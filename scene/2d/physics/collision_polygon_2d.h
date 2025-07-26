@@ -56,6 +56,9 @@ protected:
 
 	Vector<Vector<Vector2>> _decompose_in_convex();
 
+	uint32_t collision_layer = 1;
+	uint32_t collision_mask = 1;
+
 	void _build_polygon();
 
 	void _update_in_shape_owner(bool p_xform_only = false);
@@ -87,6 +90,18 @@ public:
 
 	void set_one_way_collision_margin(real_t p_margin);
 	real_t get_one_way_collision_margin() const;
+
+	void set_collision_layer(uint32_t p_layer);
+	uint32_t get_collision_layer() const;
+
+	void set_collision_mask(uint32_t p_mask);
+	uint32_t get_collision_mask() const;
+
+	void set_collision_layer_value(int p_layer_number, bool p_value);
+	bool get_collision_layer_value(int p_layer_number) const;
+
+	void set_collision_mask_value(int p_layer_number, bool p_value);
+	bool get_collision_mask_value(int p_layer_number) const;
 
 	CollisionPolygon2D();
 };

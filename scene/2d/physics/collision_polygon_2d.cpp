@@ -90,8 +90,6 @@ void CollisionPolygon2D::_update_in_shape_owner(bool p_xform_only) {
 	collision_object->shape_owner_set_disabled(owner_id, disabled);
 	collision_object->shape_owner_set_one_way_collision(owner_id, one_way_collision);
 	collision_object->shape_owner_set_one_way_collision_margin(owner_id, one_way_collision_margin);
-	collision_object->shape_owner_set_layer(owner_id, collision_layer);
-	collision_object->shape_owner_set_mask(owner_id, collision_mask);
 }
 
 void CollisionPolygon2D::_notification(int p_what) {
@@ -224,6 +222,7 @@ Rect2 CollisionPolygon2D::_edit_get_rect() const {
 
 bool CollisionPolygon2D::_edit_use_rect() const {
 	return true;
+
 }
 
 bool CollisionPolygon2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
@@ -296,6 +295,9 @@ real_t CollisionPolygon2D::get_one_way_collision_margin() const {
 
 void CollisionPolygon2D::set_collision_layer(uint32_t p_layer) {
 	collision_layer = p_layer;
+	if (collision_object) {
+		collision_object->shape_owner_set_layer(owner_id, collision_layer);
+	}
 }
 
 uint32_t CollisionPolygon2D::get_collision_layer() const {
@@ -304,6 +306,9 @@ uint32_t CollisionPolygon2D::get_collision_layer() const {
 
 void CollisionPolygon2D::set_collision_mask(uint32_t p_mask) {
 	collision_mask = p_mask;
+	if (collision_object) {
+		collision_object->shape_owner_set_mask(owner_id, collision_mask);
+	}
 }
 
 uint32_t CollisionPolygon2D::get_collision_mask() const {

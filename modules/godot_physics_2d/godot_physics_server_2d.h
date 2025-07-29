@@ -191,7 +191,6 @@ public:
 	virtual void body_set_shape_layer(RID p_body, int p_shape, uint32_t p_layer) override {}
 	virtual void body_set_shape_mask(RID p_body, int p_shape, uint32_t p_mask) override {}
 
-
 	virtual void body_attach_object_instance_id(RID p_body, ObjectID p_id) override;
 	virtual ObjectID body_get_object_instance_id(RID p_body) const override;
 

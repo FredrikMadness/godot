@@ -404,7 +404,7 @@ void CollisionObject2D::shape_owner_set_mask(uint32_t p_owner, uint32_t p_mask) 
 	ShapeData &sd = shapes[p_owner];
 	sd.mask = p_mask;
 	for (int i = 0; i < sd.shapes.size(); i++) {
-		PhysicsServer2D::get_singleton()->body_set_shape_layer(rid, sd.shapes[i].index, p_mask);
+		PhysicsServer2D::get_singleton()->body_set_shape_mask(rid, sd.shapes[i].index, p_mask);
 	}
 }
 

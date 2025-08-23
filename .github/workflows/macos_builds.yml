@@ -48,6 +48,7 @@ jobs:
         uses: ./.github/actions/godot-deps
 
       - name: Setup Vulkan SDK
+        id: vulkan-sdk
         run: |
           if sh misc/scripts/install_vulkan_sdk_macos.sh; then
             echo "VULKAN_ENABLED=yes" >> "$GITHUB_OUTPUT"

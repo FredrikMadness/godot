@@ -116,7 +116,7 @@ jobs:
 
       - name: Dump Godot API
         if: matrix.target == 'editor'
-        uses: ./.github/actions/godot-dump-api
+        uses: ./.github/actions/godot-api-dump
         with:
           bin: ${{ matrix.bin }}
 
